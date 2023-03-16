@@ -38,6 +38,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     "LittleLemonReservationAPI",
     'rest_framework',
+    "rest_framework.authtoken",
+    "djoser"
 ]
 
 MIDDLEWARE = [
@@ -134,3 +136,37 @@ MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+REST_FRAMEWORK = {
+    'DEFAULT_RENDERER_CLASSES': [
+        'rest_framework.renderers.JSONRenderer',  # Json Response
+        'rest_framework.renderers.BrowsableAPIRenderer',  # Browable API Response
+        'rest_framework_xml.renderers.XMLRenderer',  # XML Response
+        'rest_framework_csv.renderers.CSVRenderer',  # Csv Renderer
+        'rest_framework_yaml.renderers.YAMLRenderer',  # Yaml Resonse
+        'rest_framework_jsonp.renderers.JSONPRenderer',  # JSonP Response
+    ],
+    'DEFAULT_FILTER_BACKENDS': [
+        'django_filters.rest_framework.DjangoFilterBackend',  # using django Filters
+        'rest_framework.filters.OrderingFilter',
+        'rest_framework.filters.SearchFilter',
+    ],
+    'DEFAULT_PAGINATION_CLASS':
+        'rest_framework.pagination.PageNumberPagination',  # Pagination Class
+    'PAGE_SIZE': 4
+    ,
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework.authentication.TokenAuthentication',
+        'rest_framework.authentication.SessionAuthentication'
+    ),
+    'DEFAULT_THROTTLE_RATES': {
+        'anon': '20/day',  # Throttle 20 per days for not authenticated
+        'user': '5/minute',  # Throttle 5 times per min if authenticated
+    },
+    'DEFAULT_THROTTLE_CLASSES': [
+        'rest_framework.throttling.AnonRateThrottle',
+        'rest_framework.throttling.UserRateThrottle'
+    ],
+
+}
+DJOSER = {"USER_ID_FIELD": "username"}

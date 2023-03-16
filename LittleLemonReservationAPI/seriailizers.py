@@ -4,7 +4,6 @@ from rest_framework import serializers
 from django.contrib.auth.models import User
 
 
-
 class UserSerializer(ModelSerializer):
     last_login = serializers.SerializerMethodField("time_last_login_format")
     date_joined = serializers.SerializerMethodField("time_date_joined_format")

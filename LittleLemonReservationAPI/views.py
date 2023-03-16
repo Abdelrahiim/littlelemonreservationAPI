@@ -14,12 +14,13 @@ from django.contrib.auth.models import User
 class MenuView(ModelViewSet):
     serializer_class = MenuSerializer
     queryset = Menu.objects.all()
-
+    permission_classes = [permissions.IsAuthenticated]
     def list(self, request):
         items = Menu.objects.all()
         serializer = MenuSerializer(items, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
     def create(self, request):
+        self.permission_classes = [permissions.IsAuthenticated,permissions.IsAdminUser]
         serialized_item = MenuSerializer(data=request.data)
         serialized_item.is_valid(raise_exception=True)
         serialized_item.save()
